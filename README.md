@@ -4,15 +4,19 @@ This code computes the multiscale stiffness of native, polymer-infiltrated, and 
 
 RVE chain: `pn → cel → cw → EWuc/LWuc → vesselwood → ringwood → ray → clearwood`
 
-## Reference
+## References
 
-M. Königsberger, S. Scheiner, O. Lahayne, J. Schindler, D. Nuvoli, A. Mariani, J. Füssl:
+[1] M. Königsberger, S. Scheiner, O. Lahayne, J. Schindler, D. Nuvoli, A. Mariani, J. Füssl:
 *The micromechanics of transparent wood: Insights from multiscale modeling.*
-Submitted to Composites Part B, 2026.
+Submitted to Composites Part B, 2026. (Model implemented here.)
 
 Affiliations:
 - Institute for Mechanics of Materials and Structures, TU Wien, Karlsplatz 13/202, 1040 Vienna, Austria
 - Department of Chemical, Physical, Mathematical, and Natural Sciences, University of Sassari, Via Vienna 2, 07100 Sassari, Italy
+
+[2] J. Schindler, M. Königsberger, L. Zelaya-Lainez, A. Mariani, D. Nuvoli, L. A. Berglund, J. Füssl:
+*Nanoindentation of Wood Cell Walls: Effects of Delignification and Polymer Infiltration.*
+Composites Science and Technology. (Cell-wall swelling; see in particular the Supplementary Information.)
 
 ## Files
 
@@ -118,9 +122,9 @@ Keys starting with `_` are ignored, so you can use them for comments.
 ## Notes
 
 - **Checked against MATLAB:** every RVE level agrees with the MATLAB model to about 1e-10 (`python test_vs_matlab.py`). The test covers Birch, Spruce and Pine; the native, infiltrated and delignified + infiltrated states; HEMA and PMMA; MFA sweeps; and interface compliance.
-- **Ray orientation:** `[0, 90]` is kept from the MATLAB model; the 90 is in radians.
+- **Ray orientation:** rays run radially, 90° from L (orientation `[0, pi/2]`; angles are in radians). Earlier versions of the MATLAB model used `[0, 90]`, which is 90 rad = 63.4° from L. That underestimated E_R (Birch 1.94 instead of 3.29 GPa) and produced a spurious C15 coupling. Fixed in Python and in `hom_TranspWood_model.m` / `hom_TranspWood_final.m`.
 - **Non-symmetric Mori–Tanaka results:** with several orientation families the result is slightly non-symmetric. As in MATLAB, the raw tensor is reported, and its symmetric part is passed to the next scale.
-- **Swelling** (ML and S2 lumped) follows `comp_volfrac_TranspWood`: the cell-centre distance stays at its native value, so the wall grows into the lumen.
+- **Swelling** (ML and S2 lumped) follows the cell-wall swelling approach of Schindler et al. [2], see in particular their Supplementary Information, as implemented in `comp_volfrac_TranspWood`: the cell-centre distance stays at its native value, so the wall grows into the lumen.
   - Square fibre and ray cells: wall/half-width = 1-sqrt(porosity), scaled by (1+s).
   - Softwood EW/LW cells: the double wall 2W becomes 2W(1+s) at fixed outer cell size. The EW share stays fixed.
   - Vessels are unchanged.

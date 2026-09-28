@@ -267,7 +267,8 @@ def volfrac(p):
     fclw = dict(bcw=bcw, vessel=p['vessel'], fib=fib, bcw_ray=bcw * p['ray'] / nonv,
                 bcw_fib=bcw * fib / nonv, lum_ray=lum * p['ray'] / nonv, lum_fib=lum * fib / nonv)
     por = fclw['lum_fib'] / (fclw['bcw_fib'] + fclw['lum_fib'])
-    # Swelling: the lumped wall (ML+S2 together) thickens by s at fixed cell-centre
+    # Swelling after Schindler et al. (Compos. Sci. Technol., Supplementary Information):
+    # the lumped wall (ML+S2 together) thickens by s at fixed cell-centre
     # distance, i.e. inwards into the lumen (as comp_volfrac_TranspWood). Square
     # cells: wall/half-width = 1-sqrt(porosity); EW/LW cells: walls 2W -> 2W(1+s).
     s = p['swelling_pct'] / 100 if p['swelling'] else 0.0
@@ -358,11 +359,11 @@ def run(p):
         else:
             C_rw, V_rw = C_vw, V_vw
             L['ringwood'] = L['vesselwood']
-        # RVE 4c: ray cell (legacy orientation [0, 90] with 90 in radians)
+        # RVE 4c: ray cell (rays run radially, i.e. 90° from L)
         C_ray, V_ray = H('ray', [phase(pore, fclw['lum_ray'], slend=p['cell_ar'], ori=(0, 0)),
                             phase(C_cw, fclw['bcw_ray'], matrix=True)], 'MT')
         # RVE 7: clearwood
-        C, _ = H('clearwood', [phase(C_ray, V_ray, asp=10, slend=1e-20, ori=(0, 90)),
+        C, _ = H('clearwood', [phase(C_ray, V_ray, asp=10, slend=1e-20, ori=(0, np.pi / 2)),
                     phase(C_rw, V_rw, matrix=True)], 'MT')
         out['C_clearwood'].append(L['clearwood'])
         out['C_cellwall'].append(L['cw'])
