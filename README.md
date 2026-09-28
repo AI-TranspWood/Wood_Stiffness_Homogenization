@@ -111,7 +111,7 @@ Example ([examples/birch_batch.json](examples/birch_batch.json): 4 densities × 
 | `IF_alpha`, `IF_beta` | fibril–matrix interface compliance, tangential and normal [1/GPa] | 0, 0 |
 | `swelling`, `swelling_pct` | wall swelling on/off, and increase of the wall thickness [%] | false, 10 |
 | `cellulose_material` | `Dri2014_TI`, `IMWS` or `Dri` | Dri2014_TI |
-| `cell_aspect_ratio`, `superellipse_n` | lumen slenderness, and lumen shape exponent | 0.01, 4 |
+| `cell_aspect_ratio`, `superellipse_n` | fibre-lumen slenderness, and lumen shape exponent (the ray-cell lumen is fixed at 1/5) | 0.01, 4 |
 | `n_families`, `microfibril_slenderness`, `tolerance` | numerical settings | 20, 1e-20, 8 |
 | `output` | result CSV, relative to the input file (command line only) | `<input>_results.csv` |
 
@@ -122,8 +122,9 @@ Keys starting with `_` are ignored, so you can use them for comments.
 ## Notes
 
 - **Checked against MATLAB:** every RVE level agrees with the MATLAB model to about 1e-10 (`python test_vs_matlab.py`). The test covers Birch, Spruce and Pine; the native, infiltrated and delignified + infiltrated states; HEMA and PMMA; MFA sweeps; and interface compliance.
-- **Ray orientation:** rays run radially, 90° from L (orientation `[0, pi/2]`; angles are in radians). Earlier versions of the MATLAB model used `[0, 90]`, which is 90 rad = 63.4° from L. That underestimated E_R (Birch 1.94 instead of 3.29 GPa) and produced a spurious C15 coupling. Fixed in Python and in `hom_TranspWood_model.m` / `hom_TranspWood_final.m`.
+- **Ray orientation:** rays run radially, 90° from L (orientation `[0, pi/2]`; angles are in radians). Earlier versions of the MATLAB model used `[0, 90]`, which is 90 rad = 63.4° from L. That underestimated E_R (Birch with the former 1/100 ray lumen: 1.94 instead of 3.29 GPa) and produced a spurious C15 coupling. Fixed in Python and in `hom_TranspWood_model.m` / `hom_TranspWood_final.m`.
 - **Non-symmetric Mori–Tanaka results:** with several orientation families the result is slightly non-symmetric. As in MATLAB, the raw tensor is reported, and its symmetric part is passed to the next scale.
+- **Ray-cell lumen:** a spheroid with aspect ratio 1/5 along the ray axis. Fibre lumens use `cell_aspect_ratio` (1/100). The ray itself is infinitely long in the clearwood RVE. Compared with 1/100, this lowers E_R by about 10 % in native wood and 1.5–3 % in infiltrated wood; the other moduli change by less than 1.5 %.
 - **Swelling** (ML and S2 lumped) follows the cell-wall swelling approach of Schindler et al. [2], see in particular their Supplementary Information, as implemented in `comp_volfrac_TranspWood`: the cell-centre distance stays at its native value, so the wall grows into the lumen.
   - Square fibre and ray cells: wall/half-width = 1-sqrt(porosity), scaled by (1+s).
   - Softwood EW/LW cells: the double wall 2W becomes 2W(1+s) at fixed outer cell size. The EW share stays fixed.

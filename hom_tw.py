@@ -360,7 +360,7 @@ def run(p):
             C_rw, V_rw = C_vw, V_vw
             L['ringwood'] = L['vesselwood']
         # RVE 4c: ray cell (rays run radially, i.e. 90° from L)
-        C_ray, V_ray = H('ray', [phase(pore, fclw['lum_ray'], slend=p['cell_ar'], ori=(0, 0)),
+        C_ray, V_ray = H('ray', [phase(pore, fclw['lum_ray'], slend=1 / 5, ori=(0, 0)),   # ray lumen 1/5
                             phase(C_cw, fclw['bcw_ray'], matrix=True)], 'MT')
         # RVE 7: clearwood
         C, _ = H('clearwood', [phase(C_ray, V_ray, asp=10, slend=1e-20, ori=(0, np.pi / 2)),
