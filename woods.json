@@ -1,0 +1,1001 @@
+{
+ "Alder": {
+  "german": "Erle",
+  "latin": "Alnus glutinosa",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 5,
+   "max": 15,
+   "mean": 10,
+   "ref": "assumed"
+  },
+  "cells_pct": {
+   "fibres": 59,
+   "vessels": 29,
+   "rays": 12,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.434,
+   "hemicellulose": 0.23,
+   "lignin": 0.239,
+   "extractives": 0.04,
+   "ref": "Wagenführ"
+  },
+  "density_kg_m3": {
+   "min": 490,
+   "max": 640,
+   "mean": 550,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Ash": {
+  "name_detail": "Common Ash",
+  "german": "Esche",
+  "latin": "Fraxinus excelsior",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 10,
+   "max": 18,
+   "mean": 14,
+   "ref": "DeBorst2012",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 73,
+   "vessels": 12,
+   "rays": 15,
+   "ref": "Wagner2015",
+   "note": "review"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.395,
+   "hemicellulose": 0.291,
+   "lignin": 0.248,
+   "extractives": 0.063,
+   "ref": "Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 450,
+   "max": 860,
+   "mean": 720,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Aspen": {
+  "german": "Zitterpappel",
+  "latin": "Populus tremula",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 5,
+   "max": 15,
+   "mean": 10,
+   "ref": "assumed"
+  },
+  "cells_pct": {
+   "fibres": 62,
+   "vessels": 12,
+   "rays": 26,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.5495,
+   "hemicellulose": 0.22,
+   "lignin": 0.222,
+   "extractives": 0,
+   "ref": "Wagenführ"
+  },
+  "density_kg_m3": {
+   "min": 400,
+   "max": 600,
+   "mean": 490,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.56
+ },
+ "Balsa": {
+  "german": "Balsaholz",
+  "latin": "Ochroma pyramidale",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 0,
+   "max": 5,
+   "mean": 1,
+   "ref": "Borrega2015",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 71.5,
+   "vessels": 6,
+   "rays": 22.5,
+   "ref": "Borrega2015",
+   "note": "original"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.477,
+   "hemicellulose": 0.276,
+   "lignin": 0.215,
+   "extractives": 0.02,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 90,
+   "max": 260,
+   "mean": 180,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.85
+ },
+ "Beech": {
+  "name_detail": "European Beech",
+  "german": "Rotbuche",
+  "latin": "Fagus sylvatica",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 2,
+   "max": 12,
+   "mean": 7,
+   "ref": "DeBorst2012",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 63,
+   "vessels": 20,
+   "rays": 17,
+   "ref": "Wagner2015",
+   "note": "review"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.394,
+   "hemicellulose": 0.333,
+   "lignin": 0.248,
+   "extractives": 0.026,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 540,
+   "max": 910,
+   "mean": 720,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Birch": {
+  "name_detail": "Silver Birch",
+  "german": "Birke",
+  "latin": "Betula pendula",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 9.4,
+   "max": 18.3,
+   "mean": 11,
+   "ref": "Bonham2001",
+   "note": "study on the variation regarding pith distance"
+  },
+  "cells_pct": {
+   "fibres": 64.5,
+   "vessels": 25,
+   "rays": 10.5,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.41,
+   "hemicellulose": 0.324,
+   "lignin": 0.22,
+   "extractives": 0.032,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 510,
+   "max": 830,
+   "mean": 650,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.58
+ },
+ "Elm": {
+  "german": "Ulme",
+  "latin": "Ulmus minor",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 5,
+   "max": 15,
+   "mean": 10,
+   "ref": "assumed"
+  },
+  "cells_pct": {
+   "fibres": 57,
+   "vessels": 29,
+   "rays": 14,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.454,
+   "hemicellulose": 0.263,
+   "lignin": 0.23,
+   "extractives": 0.05,
+   "ref": "assumed after Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 480,
+   "max": 860,
+   "mean": 680,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Hickory": {
+  "german": "Hickory",
+  "latin": "Carya ovata",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 5,
+   "max": 15,
+   "mean": 10,
+   "ref": "assumed"
+  },
+  "cells_pct": {
+   "fibres": 72.5,
+   "vessels": 20,
+   "rays": 7.5,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.435,
+   "hemicellulose": 0.277,
+   "lignin": 0.236,
+   "extractives": 0.05,
+   "ref": "Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 700,
+   "max": 840,
+   "mean": 800,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Ipé": {
+  "german": "Ipé",
+  "latin": "Handroanthus serratifolius",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 3,
+   "max": 15,
+   "mean": 9,
+   "ref": "DeBorst2012",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 19,
+   "vessels": 24,
+   "rays": 57,
+   "ref": "DeBorst2012",
+   "note": "review"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.454,
+   "hemicellulose": 0.263,
+   "lignin": 0.23,
+   "extractives": 0.05,
+   "ref": "assumed after Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 960,
+   "max": 1100,
+   "mean": 1030,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Lime": {
+  "german": "Linde",
+  "latin": "Tilia cordata",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 16,
+   "max": 26,
+   "mean": 21,
+   "ref": "DeBorst2012",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 75,
+   "vessels": 20,
+   "rays": 5,
+   "ref": "DeBorst2012",
+   "note": "review"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.454,
+   "hemicellulose": 0.263,
+   "lignin": 0.23,
+   "extractives": 0.05,
+   "ref": "assumed after Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 350,
+   "max": 630,
+   "mean": 530,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Manil": {
+  "name_detail": "Balata rouge",
+  "german": "Manilkara",
+  "latin": "Manilkara bidentata",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 2,
+   "max": 10,
+   "mean": 6,
+   "ref": "DeBorst2012",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 66,
+   "vessels": 20,
+   "rays": 14,
+   "ref": "DeBorst2012",
+   "note": "review"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.454,
+   "hemicellulose": 0.263,
+   "lignin": 0.23,
+   "extractives": 0.05,
+   "ref": "assumed after Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 900,
+   "max": 1000,
+   "mean": 950,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Maple": {
+  "german": "Ahorn",
+  "latin": "Acer pseudoplatanus",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 2,
+   "max": 10,
+   "mean": 6,
+   "ref": "Anagnost2005",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 76,
+   "vessels": 7,
+   "rays": 17,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.407,
+   "hemicellulose": 0.308,
+   "lignin": 0.252,
+   "extractives": 0.025,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 530,
+   "max": 790,
+   "mean": 630,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Oak": {
+  "name_detail": "European Oak",
+  "german": "Stieleiche",
+  "latin": "Quercus robur",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 0,
+   "max": 6,
+   "mean": 3,
+   "ref": "DeBorst2012",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 76,
+   "vessels": 10,
+   "rays": 14,
+   "ref": "Wagner2015",
+   "note": "review"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.417,
+   "hemicellulose": 0.284,
+   "lignin": 0.246,
+   "extractives": 0.053,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 550,
+   "max": 980,
+   "mean": 750,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.57
+ },
+ "Plane": {
+  "german": "Platane",
+  "latin": "Platanus × hispanica",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 18,
+   "max": 30,
+   "mean": 24,
+   "ref": "DeBorst2012",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 50,
+   "vessels": 22,
+   "rays": 28,
+   "ref": "DeBorst2012",
+   "note": "review"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.454,
+   "hemicellulose": 0.263,
+   "lignin": 0.23,
+   "extractives": 0.05,
+   "ref": "assumed after Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 600,
+   "max": 680,
+   "mean": 650,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Poplar": {
+  "german": "Pappel",
+  "latin": "Populus nigra",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 5,
+   "max": 15,
+   "mean": 10,
+   "ref": "assumed"
+  },
+  "cells_pct": {
+   "fibres": 54,
+   "vessels": 34,
+   "rays": 12,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.391,
+   "hemicellulose": 0.28,
+   "lignin": 0.303,
+   "extractives": 0.024,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 410,
+   "max": 560,
+   "mean": 450,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Teak": {
+  "german": "Teak",
+  "latin": "Tectona grandis",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 3,
+   "max": 11,
+   "mean": 7,
+   "ref": "DeBorst2012",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 77,
+   "vessels": 10,
+   "rays": 13,
+   "ref": "DeBorst2012",
+   "note": "review"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.454,
+   "hemicellulose": 0.263,
+   "lignin": 0.23,
+   "extractives": 0.05,
+   "ref": "assumed after Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 520,
+   "max": 700,
+   "mean": 660,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.51
+ },
+ "Virola": {
+  "german": "Virola",
+  "latin": "Virola surinamensis",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 6,
+   "max": 14,
+   "mean": 10,
+   "ref": "DeBorst2012",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 85,
+   "vessels": 7,
+   "rays": 8,
+   "ref": "DeBorst2012",
+   "note": "review"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.454,
+   "hemicellulose": 0.263,
+   "lignin": 0.23,
+   "extractives": 0.05,
+   "ref": "assumed after Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 420,
+   "max": 550,
+   "mean": 450,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Walnut": {
+  "name_detail": "European Walnut",
+  "german": "Walnuss",
+  "latin": "Juglans regia",
+  "type": "hardwood",
+  "MFA_deg": {
+   "min": 0,
+   "max": 8,
+   "mean": 4,
+   "ref": "Lautner2012",
+   "note": "original"
+  },
+  "cells_pct": {
+   "fibres": 72,
+   "vessels": 12,
+   "rays": 16,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.454,
+   "hemicellulose": 0.263,
+   "lignin": 0.23,
+   "extractives": 0.05,
+   "ref": "assumed after Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 570,
+   "max": 810,
+   "mean": 680,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.54
+ },
+ "Cedar": {
+  "name_detail": "Western Red Cedar",
+  "german": "Zeder",
+  "latin": "Thuja plicata",
+  "type": "softwood",
+  "MFA_deg": {
+   "min": 8,
+   "max": 18,
+   "mean": 13,
+   "ref": "assumed"
+  },
+  "cells_pct": {
+   "fibres": 93,
+   "vessels": 0,
+   "rays": 7,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.44,
+   "hemicellulose": 0.21,
+   "lignin": 0.3,
+   "extractives": 0.05,
+   "ref": "Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 330,
+   "max": 460,
+   "mean": 390,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": null,
+   "2W_EW": null,
+   "L_LW": null,
+   "2W_LW": null
+  },
+  "CI": 0.57,
+  "EWLW_surrogate": "Douglas Fir"
+ },
+ "Douglas Fir": {
+  "german": "Douglasie",
+  "latin": "Pseudotsuga menziesii",
+  "type": "softwood",
+  "MFA_deg": {
+   "min": 8,
+   "max": 18,
+   "mean": 13,
+   "ref": "assumed",
+   "note": "review"
+  },
+  "cells_pct": {
+   "fibres": 93,
+   "vessels": 0,
+   "rays": 7,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.388,
+   "hemicellulose": 0.263,
+   "lignin": 0.293,
+   "extractives": 0.053,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 350,
+   "max": 750,
+   "mean": 510,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": 42.5,
+   "2W_EW": 6,
+   "L_LW": 22.5,
+   "2W_LW": 12
+  },
+  "CI": 0.59
+ },
+ "Fir": {
+  "name_detail": "Silver fir",
+  "german": "Weißtanne",
+  "latin": "Abies alba",
+  "type": "softwood",
+  "MFA_deg": {
+   "min": 8,
+   "max": 18,
+   "mean": 13,
+   "ref": "assumed"
+  },
+  "cells_pct": {
+   "fibres": 90.4,
+   "vessels": 0,
+   "rays": 9.6,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.388,
+   "hemicellulose": 0.285,
+   "lignin": 0.291,
+   "extractives": 0.027,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 350,
+   "max": 750,
+   "mean": 450,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": 34.6,
+   "2W_EW": 3.7,
+   "L_LW": 16.2,
+   "2W_LW": 9
+  },
+  "CI": 0.57
+ },
+ "Hemlock": {
+  "german": "Hemlocktanne",
+  "latin": "Tsuga heterophylla",
+  "type": "softwood",
+  "MFA_deg": {
+   "min": 8,
+   "max": 18,
+   "mean": 13,
+   "ref": "assumed",
+   "note": "review"
+  },
+  "cells_pct": {
+   "fibres": 91,
+   "vessels": 0,
+   "rays": 9,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.377,
+   "hemicellulose": 0.29,
+   "lignin": 0.305,
+   "extractives": 0.034,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 440,
+   "max": 510,
+   "mean": 480,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": 38,
+   "2W_EW": 4.6,
+   "L_LW": 15,
+   "2W_LW": 12.3
+  },
+  "CI": 0.57
+ },
+ "Larch": {
+  "german": "Lärche",
+  "latin": "Larix decidua",
+  "type": "softwood",
+  "MFA_deg": {
+   "min": 8,
+   "max": 18,
+   "mean": 13,
+   "ref": "assumed"
+  },
+  "cells_pct": {
+   "fibres": 91.2,
+   "vessels": 0,
+   "rays": 8.8,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.414,
+   "hemicellulose": 0.296,
+   "lignin": 0.268,
+   "extractives": 0.018,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 440,
+   "max": 850,
+   "mean": 590,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": 43,
+   "2W_EW": 5.9,
+   "L_LW": 13,
+   "2W_LW": 8.9
+  },
+  "CI": 0.57
+ },
+ "Pine": {
+  "german": "Kiefer",
+  "latin": "Pinus sylvestris",
+  "type": "softwood",
+  "MFA_deg": {
+   "min": 8,
+   "max": 18,
+   "mean": 13,
+   "ref": "assumed",
+   "note": "review"
+  },
+  "cells_pct": {
+   "fibres": 94.5,
+   "vessels": 0,
+   "rays": 5.5,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.416,
+   "hemicellulose": 0.285,
+   "lignin": 0.277,
+   "extractives": 0.035,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 330,
+   "max": 890,
+   "mean": 510,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": 45.9,
+   "2W_EW": 6.7,
+   "L_LW": 17.1,
+   "2W_LW": 13
+  },
+  "CI": 0.54
+ },
+ "Spruce": {
+  "german": "Fichte",
+  "latin": "Picea abies",
+  "type": "softwood",
+  "MFA_deg": {
+   "min": 8,
+   "max": 18,
+   "mean": 12,
+   "ref": "Bader2012",
+   "note": "review"
+  },
+  "cells_pct": {
+   "fibres": 95.5,
+   "vessels": 0,
+   "rays": 4.5,
+   "ref": "Wagenführ"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.417,
+   "hemicellulose": 0.282,
+   "lignin": 0.274,
+   "extractives": 0.034,
+   "ref": "Sjöström1993"
+  },
+  "density_kg_m3": {
+   "min": 330,
+   "max": 680,
+   "mean": 470,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": 32,
+   "2W_EW": 3.5,
+   "L_LW": 17,
+   "2W_LW": 10.7
+  },
+  "CI": 0.62
+ },
+ "Yew": {
+  "german": "Eibe",
+  "latin": "Taxus baccata",
+  "type": "softwood",
+  "MFA_deg": {
+   "min": 22,
+   "max": 32,
+   "mean": 27,
+   "ref": "Bader2012",
+   "note": "review"
+  },
+  "cells_pct": {
+   "fibres": 86,
+   "vessels": 0,
+   "rays": 14,
+   "ref": "Wagner2015"
+  },
+  "chemistry_dry_mass": {
+   "cellulose": 0.437,
+   "hemicellulose": 0.208,
+   "lignin": 0.288,
+   "extractives": 0.05,
+   "ref": "assumed after Rowell1984"
+  },
+  "density_kg_m3": {
+   "min": 640,
+   "max": 810,
+   "mean": 670,
+   "ref": "Wagenführ"
+  },
+  "EWLW_um": {
+   "L_EW": 18.4,
+   "2W_EW": 4.2,
+   "L_LW": 9.4,
+   "2W_LW": 7.7
+  },
+  "CI": 0.54
+ }
+}

@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+*.log
+matlab/*.asv
+examples/*_results.csv

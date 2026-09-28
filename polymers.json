@@ -1,0 +1,23 @@
+{
+ "_note": "Isotropic infiltration polymers, E in GPa. Values as in 02_stiffness/wood_materials.m.",
+ "PMMA": {
+  "E_GPa": 3.0,
+  "nu": 0.35,
+  "ref": "Jungstedt"
+ },
+ "HEMA": {
+  "E_GPa": 4.5,
+  "nu": 0.4,
+  "ref": "wood_materials.m"
+ },
+ "HEMA_stiff": {
+  "E_GPa": 7.5,
+  "nu": 0.4,
+  "ref": "wood_materials.m"
+ },
+ "thiol-ene": {
+  "E_GPa": 2.2,
+  "nu": 0.4,
+  "ref": "wood_materials.m"
+ }
+}

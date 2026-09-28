@@ -1,0 +1,17 @@
+{
+ "_comment": "Example input for hom_tw.py / gui.py. Missing keys take the species defaults from woods.json. Numeric values: number, list or 'start:step:stop' range; all combinations are run. 'states': 1 native, 2 infiltrated, 3 delignified + infiltrated.",
+ "wood": "Birch",
+ "states": [1, 2, 3],
+ "polymer": "HEMA",
+ "density": "550:50:700",
+ "moisture": [0, 12],
+ "E_poly": [2.2, 4.5, 7.5],
+ "nu_poly": 0.4,
+ "MFA": [10],
+ "IF_alpha": 0,
+ "IF_beta": 0,
+ "swelling": true,
+ "swelling_pct": 10,
+ "cellulose_material": "Dri2014_TI",
+ "output": "birch_batch_results.csv"
+}

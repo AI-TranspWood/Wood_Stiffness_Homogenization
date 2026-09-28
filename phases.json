@@ -1,0 +1,61 @@
+{
+ "_note": "Constituent phases of the cell wall. Stiffness in GPa, Kelvin-Mandel order 11,22,33,23,13,12 (axis 3 = fibril direction). Isotropic phases by E/nu or k/mu. Densities in g/cm^3. Values from 02_stiffness/wood_materials.m.",
+ "amorphous_cellulose": {
+  "E_GPa": 5,
+  "nu": 0.35,
+  "density": 1.5,
+  "ref": "Bader/Hofstetter"
+ },
+ "hemicellulose": {
+  "E_GPa": 8,
+  "nu": 0.35,
+  "density": 1.5,
+  "ref": "Bader/Hofstetter"
+ },
+ "lignin": {
+  "k_GPa": 5.0,
+  "mu_GPa": 2.3,
+  "density": 1.37,
+  "ref": "IMWS"
+ },
+ "extractives": {
+  "density": 0.9,
+  "note": "treated as pore volume (no stiffness)"
+ },
+ "crystalline_cellulose": {
+  "density": 1.59,
+  "Dri2014_TI": {
+   "C_GPa": [
+    [51.2, 20.8, 9.75, 0.0, 0.0, 0.0],
+    [20.8, 51.2, 9.75, 0.0, 0.0, 0.0],
+    [9.75, 9.75, 213.3, 0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0, 20.2, 0.0, 0.0],
+    [0.0, 0.0, 0.0, 0.0, 20.2, 0.0],
+    [0.0, 0.0, 0.0, 0.0, 0.0, 30.4]
+   ],
+   "ref": "Dri et al. 2014, averaged about e3 (project default)"
+  },
+  "IMWS": {
+   "C_GPa": [
+    [34.855, 0.0, 0.0, 0.0, 0.0, 0.0],
+    [0.0, 34.855, 0.0, 0.0, 0.0, 0.0],
+    [0.0, 0.0, 167.8, 0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0, 11.61, 0.0, 0.0],
+    [0.0, 0.0, 0.0, 0.0, 11.61, 0.0],
+    [0.0, 0.0, 0.0, 0.0, 0.0, 34.855]
+   ],
+   "ref": "IMWS / Poma"
+  },
+  "Dri": {
+   "C_GPa": [
+    [15.2, 5.6, 3.4, 0.0, 0.0, -1.5556349186104048],
+    [5.6, 84.6, 3.6, 0.0, 0.0, 3.6769552621700474],
+    [3.4, 3.6, 196.1, 0.0, 0.0, 0.7071067811865476],
+    [0.0, 0.0, 0.0, 32.4, 4.6, 0.0],
+    [0.0, 0.0, 0.0, 4.6, 4.4, 0.0],
+    [-1.5556349186104048, 3.6769552621700474, 0.7071067811865476, 0.0, 0.0, 9.2]
+   ],
+   "ref": "Dri et al., monoclinic"
+  }
+ }
+}
