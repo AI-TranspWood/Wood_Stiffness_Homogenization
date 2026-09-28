@@ -1,4 +1,4 @@
-# 05_python_hom: transparent-wood stiffness homogenization (Python)
+# Wood Stiffness Homogenization
 
 This code computes the multiscale stiffness of native, polymer-infiltrated, and delignified + infiltrated wood. It works from the cell-wall constituents up to clearwood. It is a procedural port of `02_stiffness/hom_TranspWood_model.m`, with a lumped cell wall: the middle lamella (ML) and S2 layer are not separated.
 
