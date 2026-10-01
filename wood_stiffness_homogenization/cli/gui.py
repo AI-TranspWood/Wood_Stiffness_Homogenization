@@ -6,12 +6,7 @@ delignified + infiltrated wood. The field keys are the input-file keys, so
 'Save input' / 'Load input' write and read the same JSON as `python hom_tw.py`.
 """
 import json
-import tkinter as tk
-from tkinter import filedialog, messagebox, ttk
-
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
-import numpy as np
+import sys
 
 from .. import homogeneization_tw as hom_tw
 from .main import cli
@@ -19,6 +14,17 @@ from .main import cli
 
 def generate_gui():
     """Generate the GUI for the wood stiffness homogenization."""
+    try:   
+        import tkinter as tk
+        from tkinter import filedialog, messagebox, ttk
+    except:
+        print('Tkinter needs to be installed to run the GUI.', file=sys.stderr)
+        sys.exit(1)
+
+    from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+    from matplotlib.figure import Figure
+    import numpy as np
+
     V = {}                                              # input key -> tk variable
     res = dict(rows=[], varied=[])                      # last run_batch result
     COLOR = {1: '#8c5a2b', 2: '#1f77b4', 3: '#2ca02c'}  # native / infiltrated / delignified + infiltrated
