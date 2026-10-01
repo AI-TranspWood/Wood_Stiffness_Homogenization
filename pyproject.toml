@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = [
+tests = [
     'pytest',
 ]
 
