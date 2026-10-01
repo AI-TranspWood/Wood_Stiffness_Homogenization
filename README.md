@@ -22,7 +22,7 @@ Composites Science and Technology. (Cell-wall swelling; see in particular the Su
 
 | file | content |
 |---|---|
-| `hom_tw.py` | the whole model (tensors, Hill tensors, Mori–Tanaka / self-consistent schemes, volume fractions, RVE chain), plus input-file and batch handling and the command-line entry |
+| `homogenization_tw.py` | the whole model (tensors, Hill tensors, Mori–Tanaka / self-consistent schemes, volume fractions, RVE chain), plus input-file and batch handling and the command-line entry |
 | `gui.py` | tkinter GUI |
 | `woods.json` | species data: MFA, cell fractions, chemistry, density, EW/LW geometry and crystallinity CI, with references (converted from `01_data/data_Wood.xlsx`) |
 | `polymers.json` | infiltration polymers (E, ν) |
@@ -31,13 +31,44 @@ Composites Science and Technology. (Cell-wall swelling; see in particular the Su
 | `test_vs_matlab.py` | compares every RVE level with the MATLAB reference in `bench_matlab.mat` |
 | `matlab/export_benchmark.m` | regenerates `bench_matlab.mat` from the MATLAB model; this is the only file that points outside the folder, to `02_stiffness` |
 
-```
-pip install -r requirements.txt       # numpy, scipy, matplotlib (tkinter ships with Python)
+## Install
+
+```bash
+cd <PATH to folder with pyproject.toml>
+pip install .
 ```
 
-## Three ways to run it
+## Usage
 
-**1. GUI:** `python gui.py`
+### CLI
+
+The installation will make available a `aitw-wood-stiffness-homogenization` command line interface.
+
+- Run `aitw-wood-stiffness-homogenization --help` to see the available commands.
+- Run `aitw-wood-stiffness-homogenization run --help` to see all available options.
+- Run `aitw-wood-stiffness-homogenization run JSON_FILE` to run an homogenization calculation.
+
+Example for birch microstructure generation:
+
+```bash
+aitw-wood-stiffness-homogenization run examples/birch_batch.json
+```
+
+#### Tab autocompletion
+
+Enabling tab autocompletion https://click.palletsprojects.com/en/stable/shell-completion/
+
+E.G for `bash` run the command
+
+```bash
+eval "$(_AITW_WOOD_STIFFNESS_HOMOGENIZATION_COMPLETE=bash_source aitw-wood-stiffness-homogenization)"
+```
+
+You can also add it to either `~/.bashrc` or, if you are using a virtual environment, to `bin/activate` of the virtual environment to avoid running the command for every new shell.
+
+### GUI
+
+**Start with**: `aitw-wood-stiffness-homogenization gui`
 
 - Pick a wood. All fields are prefilled from `woods.json` and stay editable. Density and moisture are always shown; everything else is under *Advanced*.
 - Pick a polymer, or type your own E and ν, and set the interface compliance and swelling.
@@ -50,17 +81,12 @@ pip install -r requirements.txt       # numpy, scipy, matplotlib (tkinter ships 
 - Click a table row to see its volume fractions and 6×6 stiffness tensors.
 - *Save input…* writes the current fields as an input file, and *Load input…* reads one back. *Save CSV* writes the results.
 
-**2. Input file on the command line:**
-
-```
-python hom_tw.py examples/birch_batch.json            # -> examples/birch_batch_results.csv
-python hom_tw.py my_input.json my_results.csv
-```
-
-**3. From Python:**
+### Programmatically
 
 ```python
-import hom_tw as h, json
+import json
+from wood_stiffness_homogenization import homogeneization_tw as h
+
 b = h.run_batch(json.load(open('examples/birch_batch.json')))   # or a dict built in code
 h.write_csv(b, 'results.csv')
 for d, r, i in b['rows']:              # one row per state, combination and MFA

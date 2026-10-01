@@ -5,13 +5,14 @@ no ML/S2 split). Kelvin-Mandel notation, order 11,22,33,23,13,12, GPa.
 RVE chain: pn -> cel -> cw -> EWuc/LWuc -> vesselwood -> ringwood -> ray
 -> clearwood.
 """
+import csv
+from importlib import resources
 import itertools
 import json
-import os
 from math import gamma, sqrt
+
 import numpy as np
 
-HERE = os.path.dirname(os.path.abspath(__file__))
 I6 = np.eye(6)
 IVOL = np.zeros((6, 6)); IVOL[:3, :3] = 1 / 3
 IDEV = I6 - IVOL
@@ -210,7 +211,8 @@ def hom(phases, scheme, tol=8):
 
 # ------------------------------------------- data (all in this folder, JSON)
 def _load(fn):
-    with open(os.path.join(HERE, fn), encoding='utf8') as f:
+    path = resources.files('wood_stiffness_homogenization') / 'data' / fn
+    with open(path, encoding='utf8') as f:
         return json.load(f)
 
 
@@ -487,7 +489,6 @@ def run_batch(inp, progress=None):
 
 def write_csv(b, fn):
     """One line per row of run_batch: all inputs, outputs, upper triangles of C."""
-    import csv
     iu, f = np.triu_indices(6), b['inputs']
     with open(fn, 'w', newline='', encoding='utf8') as fh:
         w = csv.writer(fh)
@@ -498,20 +499,3 @@ def write_csv(b, fn):
             w.writerow([f['wood'], f['polymer'], f['cellulose_material'], f['swelling'], STATES[d['state']]]
                        + [d[k] for k in INPUTS] + [d['MFA']] + [r[k][i] for k in OUTPUTS]
                        + list(r['C_clearwood'][i][iu]) + list(r['C_cellwall'][i][iu]))
-
-
-if __name__ == '__main__':
-    # python hom_tw.py input.json [results.csv]
-    import sys
-    if len(sys.argv) < 2:
-        sys.exit('usage: python hom_tw.py input.json [results.csv]')
-    with open(sys.argv[1], encoding='utf8') as fh:
-        inp = json.load(fh)
-    out = sys.argv[2] if len(sys.argv) > 2 else os.path.join(
-        os.path.dirname(os.path.abspath(sys.argv[1])),
-        inp.get('output', os.path.splitext(os.path.basename(sys.argv[1]))[0] + '_results.csv'))
-    b = run_batch(inp, lambda n, N: print(f'\r{n}/{N} runs', end='', flush=True))
-    write_csv(b, out)
-    print(f"\n{len(b['rows'])} rows -> {out}" + (f", {len(b['errors'])} failed:" if b['errors'] else ''))
-    for e in b['errors']:
-        print('  ', e)
