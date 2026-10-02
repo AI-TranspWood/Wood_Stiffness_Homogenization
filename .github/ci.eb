@@ -33,8 +33,8 @@ exts_list = [
         'modulename': 'wood_stiffness_homogenization',
         'source_urls': ['https://github.com/AI-TranspWood/Wood_Stiffness_Homogenization/archive/'],
         'sources': [{
-            'filename': '%(software_commit)s.tar.gz',
-            'download_filename': 'v%(version)s.tar.gz'
+            'download_filename': '%(software_commit)s.tar.gz',
+            'filename': SOURCE_TAR_GZ
         }],
         'click_autocomplete_bins': ['aitw-wood-stiffness-homogenization'],
     }),
