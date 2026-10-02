@@ -2,30 +2,40 @@
 import json
 import os
 
-from ..homogenization_tw import run_batch, write_csv
+from ..homogenization_tw import run_batch
+from ..myio import write_csv
+from ..params import BatchHomegenizationParams
 from .main import cli, click
 
 
 @cli.command()
-@click.argument('input_json', type=click.Path(exists=True, dir_okay=False, readable=True))
-@click.option(
-    '--output', '-o',
-    default=None,
-    type=click.Path(dir_okay=False, writable=True), help='Output file name (CSV).'
-)
-def run(input_json, output):
+@click.pass_context
+@BatchHomegenizationParams.to_click_options
+def run(ctx, config_file):
     """Run the wood stiffness homogenization."""
-    click.echo(f'Running wood stiffness homogenization with input file: {input_json}')
-    with open(input_json, encoding='utf8') as f:
-        input_data = json.load(f)
+    click.echo(f'Running wood stiffness homogenization with input file: {config_file}')
+
+    data = {}
+    if config_file:
+         with open(config_file, encoding='utf8') as f:
+            data = json.load(f)
+
+    overrides: dict = ctx.obj.get('override_params', {})
+
+    output = overrides.pop('output', None)
     if output is None:
-        input_dir = os.path.dirname(input_json)
-        output_name = input_data.get('output')
-        if output_name is None:
-            output_name = os.path.splitext(os.path.basename(input_json))[0] + '_results.csv'
+        if config_file is None:
+            input_dir = os.getcwd()
+            output_name = 'homogenization_results.csv'
+        else:
+            input_dir = os.path.dirname(config_file)
+            output_name = os.path.splitext(os.path.basename(config_file))[0] + '_results.csv'
         output = os.path.join(input_dir, output_name)
 
-    result = run_batch(input_data)
+    if overrides:
+        data.update(overrides)
+
+    result = run_batch(data)
     write_csv(result, output)
 
     click.echo(f'Output written to: {output}')

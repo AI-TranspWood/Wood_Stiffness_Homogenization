@@ -9,6 +9,7 @@ import json
 import sys
 
 from .. import homogenization_tw as hom_tw
+from .. import constants as cst
 from .main import cli
 
 
@@ -137,14 +138,14 @@ def generate_gui():
     def show_table():
         ins = ['state'] + [k for k in res['varied'] if k != 'MFA'] + ['MFA']
         tree.delete(*tree.get_children())
-        tree['columns'] = ins + list(hom_tw.OUTPUTS)
+        tree['columns'] = ins + list(cst.OUTPUTS)
         for c in tree['columns']:
-            tree.heading(c, text=label(c) if c in ins else hom_tw.OUTPUTS[c])
+            tree.heading(c, text=label(c) if c in ins else cst.OUTPUTS[c])
             tree.column(c, width={'state': 150}.get(c, 95 if c in ins else 72), anchor='e', stretch=False)
         for j, (d, r, i) in enumerate(res['rows']):
             tree.insert('', 'end', iid=str(j), tags=(str(d['state']),),
                         values=[hom_tw.STATES[d['state']]] + [fmt(d[k]) for k in ins[1:]]
-                        + [f'{r[k][i]:.4g}' for k in hom_tw.OUTPUTS])
+                        + [f'{r[k][i]:.4g}' for k in cst.OUTPUTS])
         for st, c in COLOR.items():
             tree.tag_configure(str(st), foreground=c)
 
@@ -208,7 +209,7 @@ def generate_gui():
             ax.set_ylabel('[GPa]')
             ax.grid(alpha=0.3, axis='y')
         else:                                           # x-y plot, one line per state
-            key = next(k for k, lab in hom_tw.OUTPUTS.items() if lab == ysel.get())
+            key = next(k for k, lab in cst.OUTPUTS.items() if lab == ysel.get())
             x = xkey()
             fixed = {k: float(cb.get()) for k, cb in SLICE.items()}
             xs = sorted({d[x] for d, _, _ in rows})
@@ -328,7 +329,7 @@ def generate_gui():
     pf.grid(row=1, column=0, sticky='w', pady=(6, 0))
     ylab = ttk.Label(pf, text='plot')
     ylab.grid(row=0, column=0)
-    ysel = ttk.Combobox(pf, values=list(hom_tw.OUTPUTS.values()), state='readonly', width=16)
+    ysel = ttk.Combobox(pf, values=list(cst.OUTPUTS.values()), state='readonly', width=16)
     ysel.set('E_L [GPa]')
     ysel.grid(row=0, column=1, padx=4)
     xlab = ttk.Label(pf, text='vs')
