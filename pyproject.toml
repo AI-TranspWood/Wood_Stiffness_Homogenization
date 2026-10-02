@@ -14,7 +14,7 @@ license = {file = 'LICENSE'}
 requires-python = '>=3.11'
 dependencies = [
     'trogon',
-    'rich_click',
+    'rich_click>=1.9,<2.0',
     'numpy',
     'scipy',
     'matplotlib',
