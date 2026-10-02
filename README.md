@@ -48,7 +48,7 @@ The installation will make available a `aitw-wood-stiffness-homogenization` comm
 - Run `aitw-wood-stiffness-homogenization run --help` to see all available options.
 - Run `aitw-wood-stiffness-homogenization run JSON_FILE` to run an homogenization calculation.
 
-Example for birch microstructure generation:
+Example for running the example input file:
 
 ```bash
 aitw-wood-stiffness-homogenization run examples/birch_batch.json
