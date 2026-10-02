@@ -8,7 +8,7 @@ import time
 import numpy as np
 from scipy.io import loadmat
 
-import wood_stiffness_homogenization.homogeneization_tw as h
+import wood_stiffness_homogenization.homogenization_tw as h
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 B = dict(density=646, moisture=10, CI=0.58, MFA=[10])

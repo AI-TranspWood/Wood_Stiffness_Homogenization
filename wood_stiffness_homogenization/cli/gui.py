@@ -8,7 +8,7 @@ delignified + infiltrated wood. The field keys are the input-file keys, so
 import json
 import sys
 
-from .. import homogeneization_tw as hom_tw
+from .. import homogenization_tw as hom_tw
 from .main import cli
 
 

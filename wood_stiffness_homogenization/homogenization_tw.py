@@ -466,6 +466,7 @@ def run_batch(inp, progress=None):
               if st != 1 or all(idx[list(INPUTS).index(k)] == 0 for k in POLY)]   # native: polymer once
     rows, errors = [], []
     for n, (st, d) in enumerate(combos):
+        # print(f'Running {STATES[st]} {d} ({n + 1}/{len(combos)})')
         p = defaults(f['wood'])
         p.update(state=st, polymer='custom', MFA=mfa, cellulose=f['cellulose_material'],
                  swelling=bool(f['swelling']), E_poly=d['E_poly'], nu_poly=d['nu_poly'],

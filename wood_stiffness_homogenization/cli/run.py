@@ -2,7 +2,7 @@
 import json
 import os
 
-from ..homogeneization_tw import run_batch, write_csv
+from ..homogenization_tw import run_batch, write_csv
 from .main import cli, click
 
 

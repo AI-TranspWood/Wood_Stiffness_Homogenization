@@ -85,7 +85,7 @@ You can also add it to either `~/.bashrc` or, if you are using a virtual environ
 
 ```python
 import json
-from wood_stiffness_homogenization import homogeneization_tw as h
+from wood_stiffness_homogenization import homogenization_tw as h
 
 b = h.run_batch(json.load(open('examples/birch_batch.json')))   # or a dict built in code
 h.write_csv(b, 'results.csv')
