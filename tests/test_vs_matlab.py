@@ -85,4 +85,5 @@ def test_vs_matlab():
     print(f'\nhom_TranspWood_final.m vs Python: rel. error {e:.1e} '
           f"(MATLAB {M['final'].time:.1f} s)")
     print('\nALL PASSED' if ok else '\nFAILED (tol %.0e)' % tol)
-    return ok
+    
+    assert ok, f"Some tests failed (tol {tol:.0e}). See printed output for details."
