@@ -1,4 +1,4 @@
-"""Cli to manage stored kernelspecs."""
+"""Cli to run the wood_stiffness_homogenization commands."""
 import os
 
 from trogon import tui
