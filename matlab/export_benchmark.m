@@ -73,5 +73,5 @@ S = load(out);
 final.C_clearwood = S.results(1).RVE.clearwood.Chom;
 final.time = final_time;
 
-save(fullfile(here,'..','bench_matlab.mat'),'bench','hill','final','-v7');
+save(fullfile(here,'..', 'tests', 'bench_matlab.mat'),'bench','hill','final','-v7');
 fprintf('saved bench_matlab.mat\n')

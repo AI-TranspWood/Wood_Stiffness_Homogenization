@@ -4,9 +4,11 @@ Prints the relative Frobenius error per RVE level and case, plus timing.
 """
 import os
 import time
+
 import numpy as np
 from scipy.io import loadmat
-import hom_tw as h
+
+import wood_stiffness_homogenization.homogenization_tw as h
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 B = dict(density=646, moisture=10, CI=0.58, MFA=[10])
@@ -29,7 +31,8 @@ def rel(a, b):
     return np.linalg.norm(a - b) / np.linalg.norm(b)
 
 
-def main(tol=1e-6):
+def test_vs_matlab():
+    tol = 1e-6
     M = loadmat(os.path.join(HERE, 'bench_matlab.mat'), squeeze_me=True, struct_as_record=False)
     ok = True
 
@@ -82,8 +85,5 @@ def main(tol=1e-6):
     print(f'\nhom_TranspWood_final.m vs Python: rel. error {e:.1e} '
           f"(MATLAB {M['final'].time:.1f} s)")
     print('\nALL PASSED' if ok else '\nFAILED (tol %.0e)' % tol)
-    return ok
-
-
-if __name__ == '__main__':
-    main()
+    
+    assert ok, f"Some tests failed (tol {tol:.0e}). See printed output for details."

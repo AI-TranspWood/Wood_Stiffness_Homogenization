@@ -22,22 +22,53 @@ Composites Science and Technology. (Cell-wall swelling; see in particular the Su
 
 | file | content |
 |---|---|
-| `hom_tw.py` | the whole model (tensors, Hill tensors, Mori–Tanaka / self-consistent schemes, volume fractions, RVE chain), plus input-file and batch handling and the command-line entry |
-| `gui.py` | tkinter GUI |
-| `woods.json` | species data: MFA, cell fractions, chemistry, density, EW/LW geometry and crystallinity CI, with references (converted from `01_data/data_Wood.xlsx`) |
-| `polymers.json` | infiltration polymers (E, ν) |
-| `phases.json` | cell-wall constituents: crystalline cellulose variants, amorphous cellulose, hemicellulose, lignin, densities |
+| `wood_stiffness_homogenization/homogenization_tw.py` | the whole model (tensors, Hill tensors, Mori–Tanaka / self-consistent schemes, volume fractions, RVE chain), plus input-file and batch handling and the command-line entry |
+| `wood_stiffness_homogenization/cli/gui.py` | tkinter GUI |
+| `wood_stiffness_homogenization/data/woods.json` | species data: MFA, cell fractions, chemistry, density, EW/LW geometry and crystallinity CI, with references (converted from `01_data/data_Wood.xlsx`) |
+| `wood_stiffness_homogenization/data/polymers.json` | infiltration polymers (E, ν) |
+| `wood_stiffness_homogenization/data/phases.json` | cell-wall constituents: crystalline cellulose variants, amorphous cellulose, hemicellulose, lignin, densities |
 | `examples/birch_batch.json` | example input file |
-| `test_vs_matlab.py` | compares every RVE level with the MATLAB reference in `bench_matlab.mat` |
+| `tests/test_vs_matlab.py` | compares every RVE level with the MATLAB reference in `bench_matlab.mat` |
 | `matlab/export_benchmark.m` | regenerates `bench_matlab.mat` from the MATLAB model; this is the only file that points outside the folder, to `02_stiffness` |
 
-```
-pip install -r requirements.txt       # numpy, scipy, matplotlib (tkinter ships with Python)
+## Install
+
+```bash
+cd <PATH to folder with pyproject.toml>
+pip install .
 ```
 
-## Three ways to run it
+## Usage
 
-**1. GUI:** `python gui.py`
+### CLI
+
+The installation will make available a `aitw-wood-stiffness-homogenization` command line interface.
+
+- Run `aitw-wood-stiffness-homogenization --help` to see the available commands.
+- Run `aitw-wood-stiffness-homogenization run --help` to see all available options.
+- Run `aitw-wood-stiffness-homogenization run JSON_FILE` to run an homogenization calculation.
+
+Example for running the example input file:
+
+```bash
+aitw-wood-stiffness-homogenization run examples/birch_batch.json
+```
+
+#### Tab autocompletion
+
+Enabling tab autocompletion https://click.palletsprojects.com/en/stable/shell-completion/
+
+E.G for `bash` run the command
+
+```bash
+eval "$(_AITW_WOOD_STIFFNESS_HOMOGENIZATION_COMPLETE=bash_source aitw-wood-stiffness-homogenization)"
+```
+
+You can also add it to either `~/.bashrc` or, if you are using a virtual environment, to `bin/activate` of the virtual environment to avoid running the command for every new shell.
+
+### GUI
+
+**Start with**: `aitw-wood-stiffness-homogenization gui`
 
 - Pick a wood. All fields are prefilled from `woods.json` and stay editable. Density and moisture are always shown; everything else is under *Advanced*.
 - Pick a polymer, or type your own E and ν, and set the interface compliance and swelling.
@@ -50,17 +81,12 @@ pip install -r requirements.txt       # numpy, scipy, matplotlib (tkinter ships 
 - Click a table row to see its volume fractions and 6×6 stiffness tensors.
 - *Save input…* writes the current fields as an input file, and *Load input…* reads one back. *Save CSV* writes the results.
 
-**2. Input file on the command line:**
-
-```
-python hom_tw.py examples/birch_batch.json            # -> examples/birch_batch_results.csv
-python hom_tw.py my_input.json my_results.csv
-```
-
-**3. From Python:**
+### Programmatically
 
 ```python
-import hom_tw as h, json
+import json
+from wood_stiffness_homogenization import homogenization_tw as h
+
 b = h.run_batch(json.load(open('examples/birch_batch.json')))   # or a dict built in code
 h.write_csv(b, 'results.csv')
 for d, r, i in b['rows']:              # one row per state, combination and MFA
@@ -121,7 +147,7 @@ Keys starting with `_` are ignored, so you can use them for comments.
 
 ## Notes
 
-- **Checked against MATLAB:** every RVE level agrees with the MATLAB model to about 1e-10 (`python test_vs_matlab.py`). The test covers Birch, Spruce and Pine; the native, infiltrated and delignified + infiltrated states; HEMA and PMMA; MFA sweeps; and interface compliance.
+- **Checked against MATLAB:** every RVE level agrees with the MATLAB model to about 1e-10 (`pip install .[tests]` and `pytest -sv`). The test covers Birch, Spruce and Pine; the native, infiltrated and delignified + infiltrated states; HEMA and PMMA; MFA sweeps; and interface compliance.
 - **Ray orientation:** rays run radially, 90° from L (orientation `[0, pi/2]`; angles are in radians). Earlier versions of the MATLAB model used `[0, 90]`, which is 90 rad = 63.4° from L. That underestimated E_R (Birch with the former 1/100 ray lumen: 1.94 instead of 3.29 GPa) and produced a spurious C15 coupling. Fixed in Python and in `hom_TranspWood_model.m` / `hom_TranspWood_final.m`.
 - **Non-symmetric Mori–Tanaka results:** with several orientation families the result is slightly non-symmetric. As in MATLAB, the raw tensor is reported, and its symmetric part is passed to the next scale.
 - **Ray-cell lumen:** a spheroid with aspect ratio 1/5 along the ray axis. Fibre lumens use `cell_aspect_ratio` (1/100). The ray itself is infinitely long in the clearwood RVE. Compared with 1/100, this lowers E_R by about 10 % in native wood and 1.5–3 % in infiltrated wood; the other moduli change by less than 1.5 %.
