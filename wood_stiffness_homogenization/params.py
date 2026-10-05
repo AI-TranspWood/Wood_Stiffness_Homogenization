@@ -27,7 +27,6 @@ class DelimitedList(click.ParamType):
         self.name = f'[{name}[{self.delimiter}{name}]]'
 
     def convert(self, value, param, ctx):
-        print(f'----Converting value: {value} for param: {param.name}')
         if isinstance(value, list):
             res = [self.subtype(item) for item in value]
         elif not isinstance(value, str):
@@ -112,16 +111,11 @@ class JsonParams:
 
         def callback(ctx: click.Context, param: click.Parameter, value):
             ctx.ensure_object(dict)
-            # source = ctx.get_parameter_source(param.name)
-            # if source == ParameterSource.DEFAULT:
-            #     return
-            # print(f'Callback for {param.name:<25s} with value: {value}')
             name = name_map.get(param.name)
             overrides = ctx.obj.setdefault('override_params', {})
             if value is None:
                 # print(f'    No value provided for {name}, skipping override.')
                 return
-            print(f"    Overriding parameter {name:<25s} with value: {value}")
             overrides[name] = value
 
         for fld in fields(cls)[::-1]:

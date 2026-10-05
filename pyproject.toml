@@ -24,9 +24,6 @@ dependencies = [
 tests = [
     'pytest',
 ]
-gui = [
-    "matplotlib",
-]
 
 [project.scripts]
 aitw-wood-stiffness-homogenization = 'wood_stiffness_homogenization.cli:cli'

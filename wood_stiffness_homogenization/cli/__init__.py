@@ -2,4 +2,5 @@
 
 from .gui import *
 from .main import *
+from .postproc import *
 from .run import *
