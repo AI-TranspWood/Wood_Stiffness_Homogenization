@@ -46,7 +46,8 @@ The installation will make available a `aitw-wood-stiffness-homogenization` comm
 
 - Run `aitw-wood-stiffness-homogenization --help` to see the available commands.
 - Run `aitw-wood-stiffness-homogenization run --help` to see all available options.
-- Run `aitw-wood-stiffness-homogenization run JSON_FILE` to run an homogenization calculation.
+- Run `aitw-wood-stiffness-homogenization run <JSON_FILE>` to run an homogenization calculation. If not JSON file is passed or if not all parameters are present, the default will be used
+- Run `aitw-wood-stiffness-homogenization postproc plot CSV_FILE` to generate a series of BAR plots from the output of a run.
 
 Example for running the example input file:
 

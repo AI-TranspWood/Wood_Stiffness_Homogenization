@@ -5,13 +5,12 @@ no ML/S2 split). Kelvin-Mandel notation, order 11,22,33,23,13,12, GPa.
 RVE chain: pn -> cel -> cw -> EWuc/LWuc -> vesselwood -> ringwood -> ray
 -> clearwood.
 """
-import csv
-from importlib import resources
 import itertools
-import json
 from math import gamma, sqrt
 
 import numpy as np
+
+from .constants import INPUTS, STATES, POLY, PH, WOODS, POLYMERS, CRYCEL, RHO
 
 I6 = np.eye(6)
 IVOL = np.zeros((6, 6)); IVOL[:3, :3] = 1 / 3
@@ -25,6 +24,14 @@ def C_kmu(k, mu):
 
 def C_Enu(E, nu):
     return C_kmu(E / (3 * (1 - 2 * nu)), E / (2 * (1 + nu)))
+
+
+def _iso(d):
+    return C_Enu(d['E_GPa'], d['nu']) if 'E_GPa' in d else C_kmu(d['k_GPa'], d['mu_GPa'])
+
+
+AMCEL, HEMCEL, LIGNIN = (_iso(PH[k]) for k in ('amorphous_cellulose', 'hemicellulose', 'lignin'))
+PORE = np.zeros((6, 6))
 
 
 def Q4_bp(azi, zeni):
@@ -209,28 +216,6 @@ def hom(phases, scheme, tol=8):
     return C, V                                   # raw; callers pass on sym(C)
 
 
-# ------------------------------------------- data (all in this folder, JSON)
-def _load(fn):
-    path = resources.files('wood_stiffness_homogenization') / 'data' / fn
-    with open(path, encoding='utf8') as f:
-        return json.load(f)
-
-
-def _iso(d):
-    return C_Enu(d['E_GPa'], d['nu']) if 'E_GPa' in d else C_kmu(d['k_GPa'], d['mu_GPa'])
-
-
-PH = _load('phases.json')                         # cell-wall constituents
-WOODS = _load('woods.json')                       # species data (from data_Wood.xlsx)
-POLYMERS = {k: (v['E_GPa'], v['nu']) for k, v in _load('polymers.json').items() if k[0] != '_'}
-CRYCEL = {k: np.array(v['C_GPa']) for k, v in PH['crystalline_cellulose'].items() if isinstance(v, dict)}
-AMCEL, HEMCEL, LIGNIN = (_iso(PH[k]) for k in ('amorphous_cellulose', 'hemicellulose', 'lignin'))
-PORE = np.zeros((6, 6))
-RHO = dict(crycel=PH['crystalline_cellulose']['density'], amcel=PH['amorphous_cellulose']['density'],
-           hemcel=PH['hemicellulose']['density'], lignin=PH['lignin']['density'],
-           extr=PH['extractives']['density'])
-
-
 def defaults(name):
     """Model inputs prefilled from one species (editable afterwards)."""
     w = WOODS[name]
@@ -239,13 +224,16 @@ def defaults(name):
     if 'EWLW_surrogate' in w and not np.all(np.isfinite(ewlw)):   # e.g. Cedar -> Douglas Fir
         ewlw, tol_ew = [nan(v) for v in WOODS[w['EWLW_surrogate']]['EWLW_um'].values()], 0.05
     c = w['chemistry_dry_mass']
-    return dict(wood=name, density=float(w['density_kg_m3']['mean']), moisture=12.0, CI=float(w['CI']),
-                MFA=[float(w['MFA_deg']['mean'])], vessel=w['cells_pct']['vessels'] / 100,
-                ray=w['cells_pct']['rays'] / 100,
-                mass_fr=[float(c[k]) for k in ('cellulose', 'hemicellulose', 'lignin', 'extractives')],
-                EWLW=ewlw, EWLW_tol=tol_ew, cell_ar=1 / 100, n_super=4.0, state=1, polymer='none',
-                E_poly=np.nan, nu_poly=np.nan, IF=(0.0, 0.0), nfam=20, slend_mf=1e-20,
-                cellulose='Dri2014_TI', tol=8, swelling=False, swelling_pct=0.0)
+
+    return dict(
+        wood=name, density=float(w['density_kg_m3']['mean']), moisture=12.0, CI=float(w['CI']),
+        MFA=[float(w['MFA_deg']['mean'])], vessel=w['cells_pct']['vessels'] / 100,
+        ray=w['cells_pct']['rays'] / 100,
+        mass_fr=[float(c[k]) for k in ('cellulose', 'hemicellulose', 'lignin', 'extractives')],
+        EWLW=ewlw, EWLW_tol=tol_ew, cell_ar=1 / 100, n_super=4.0, state=1, polymer='none',
+        E_poly=np.nan, nu_poly=np.nan, IF=(0.0, 0.0), nfam=20, slend_mf=1e-20,
+        cellulose='Dri2014_TI', tol=8, swelling=False, swelling_pct=0.0
+        )
 
 
 def volfrac(p):
@@ -304,19 +292,19 @@ def volfrac(p):
 
 
 # ------------------------------------------------------------- the model
-def run(p):
+def run(params):
     """Homogenize one parameter set p (see defaults()) for every MFA in p['MFA']."""
-    v = volfrac(p)
+    v = volfrac(params)
     fcw, fclw = v['fcw'], v['fclw']
     poly = None
-    if p['state'] != 1:
-        E, nu = POLYMERS.get(p['polymer'], (p['E_poly'], p['nu_poly']))
+    if params['state'] != 1:
+        E, nu = POLYMERS.get(params['polymer'], (params['E_poly'], params['nu_poly']))
         if not (np.isfinite(E) and np.isfinite(nu)):
             raise ValueError('polymer E and nu required for states 2 and 3')
         poly = C_Enu(E, nu)
     pore = PORE if poly is None else poly
-    lig = poly if p['state'] == 3 else LIGNIN
-    tol, IF = p['tol'], tuple(p['IF'])
+    lig = poly if params['state'] == 3 else LIGNIN
+    tol, IF = params['tol'], tuple(params['IF'])
     L = {}
 
     def H(name, phases, scheme):                  # store raw Chom, pass on symmetric part
@@ -327,28 +315,28 @@ def run(p):
     C_pn, V_pn = H('pn', [phase(HEMCEL, fcw['hemcel']), phase(lig, fcw['lignin']),
                       phase(pore, fcw['pore'])], 'SCS')
     C_cel, V_cel = H('cel', [phase(AMCEL, fcw['amcel'], matrix=True),
-                        phase(CRYCEL[p['cellulose']], fcw['crycel'], slend=1e-20, ori=(0, 0))], 'MT')
-    out = dict(MFA=list(p['MFA']), C_clearwood=[], C_cellwall=[], levels=[], vol=v)
-    for mfa in p['MFA']:
+                        phase(CRYCEL[params['cellulose']], fcw['crycel'], slend=1e-20, ori=(0, 0))], 'MT')
+    out = dict(MFA=list(params['MFA']), C_clearwood=[], C_cellwall=[], levels=[], vol=v)
+    for mfa in params['MFA']:
         a = mfa * np.pi / 180
         L = dict(pn=L['pn'], cel=L['cel'])
         # RVE 3: cell wall, fibrils in nfam orientation families
         if a == 0:
-            cel = [phase(C_cel, V_cel, slend=p['slend_mf'], ori=(0, 0), IF=IF)]
+            cel = [phase(C_cel, V_cel, slend=params['slend_mf'], ori=(0, 0), IF=IF)]
         else:
-            n = p['nfam']
-            cel = [phase(C_cel, V_cel / n, slend=p['slend_mf'], ori=(i / n * 2 * np.pi, a), IF=IF)
+            n = params['nfam']
+            cel = [phase(C_cel, V_cel / n, slend=params['slend_mf'], ori=(i / n * 2 * np.pi, a), IF=IF)
                    for i in range(n)]
         C_cw, _ = H('cw', cel + [phase(C_pn, V_pn, matrix=True)], 'MT')
         # RVE 4a/b: earlywood / latewood unit cells
         ew = v['EW'] * fclw['fib']
-        C_ew, V_ew = H('EWuc', [phase(pore, v['fEW'] * ew, slend=p['cell_ar'], ori=(0, 0)),
+        C_ew, V_ew = H('EWuc', [phase(pore, v['fEW'] * ew, slend=params['cell_ar'], ori=(0, 0)),
                           phase(C_cw, (1 - v['fEW']) * ew, matrix=True)], 'MT')
         LW = v['LW'] > 0
         if LW:
             lw = v['LW'] * fclw['fib']
-            C_lw, V_lw = H('LWuc', [phase(pore, v['fLW'] * lw, asp=p['EWLW'][2] / p['EWLW'][0],
-                                    slend=p['cell_ar'], ori=(0, 0)),
+            C_lw, V_lw = H('LWuc', [phase(pore, v['fLW'] * lw, asp=params['EWLW'][2] / params['EWLW'][0],
+                                    slend=params['cell_ar'], ori=(0, 0)),
                               phase(C_cw, (1 - v['fLW']) * lw, matrix=True)], 'MT')
         # RVE 5: vesselwood, RVE 6: annual ring
         C_vw, V_vw = H('vesselwood', [phase(pore, fclw['vessel'], slend=1 / 1000, ori=(0, 0)),
@@ -396,56 +384,41 @@ def indentation_modulus(C):
     return 2 * sqrt((C31 ** 2 - C13 ** 2) / C11 / (1 / C44 + 2 / (C31 + C13)))
 
 
-# ---------------------------------------------------- input files and batches
-# Flat input keys (GUI fields = input-file keys). Numeric values may be a number,
-# a list [a, b, c] or a range string 'start:step:stop' -> all combinations are run.
-INPUTS = {'density': 'Density [kg/m³]', 'moisture': 'Moisture [% dry mass]',
-          'E_poly': 'E polymer [GPa]', 'nu_poly': 'nu polymer [-]',
-          'IF_alpha': 'IF alpha tangential [1/GPa]', 'IF_beta': 'IF beta normal [1/GPa]',
-          'swelling_pct': 'Wall thickness increase [%]', 'CI': 'Crystallinity CI [-]',
-          'cellulose': 'Cellulose [dry mass fr.]', 'hemicellulose': 'Hemicellulose [dry mass fr.]',
-          'lignin': 'Lignin [dry mass fr.]', 'extractives': 'Extractives [dry mass fr.]',
-          'vessel_pct': 'Vessels [%]', 'ray_pct': 'Rays [%]', 'L_EW': 'L EW [µm]', 'W2_EW': '2W EW [µm]',
-          'L_LW': 'L LW [µm]', 'W2_LW': '2W LW [µm]', 'cell_aspect_ratio': 'Cell aspect ratio',
-          'superellipse_n': 'Superellipse n', 'n_families': 'Fibril orientation families',
-          'microfibril_slenderness': 'Microfibril slenderness', 'tolerance': 'Tolerance (1-16)'}
-STATES = {1: 'native', 2: 'infiltrated', 3: 'delignified + infiltrated'}
-OUTPUTS = {'E_R': 'E_R [GPa]', 'E_T': 'E_T [GPa]', 'E_L': 'E_L [GPa]', 'G_TL': 'G_TL [GPa]',
-           'G_RL': 'G_RL [GPa]', 'G_RT': 'G_RT [GPa]', 'nu_TR': 'nu_TR', 'nu_LR': 'nu_LR',
-           'nu_TL': 'nu_TL', 'nu_LT': 'nu_LT', 'M_cw': 'M_cellwall [GPa]'}
-POLY = ('E_poly', 'nu_poly')                      # irrelevant for native wood
-
-
-def flat_defaults(wood):
+def flat_defaults(wood: str):
     """Complete flat input set for one species (what the GUI shows)."""
-    p = defaults(wood)
+    params = defaults(wood)
     E, nu = POLYMERS['HEMA']
-    f = dict(wood=wood, states=[1, 2, 3], polymer='HEMA', E_poly=E, nu_poly=nu,
-             density=p['density'], moisture=p['moisture'], CI=p['CI'], MFA=p['MFA'],
-             vessel_pct=100 * p['vessel'], ray_pct=100 * p['ray'], IF_alpha=0.0, IF_beta=0.0,
-             swelling=False, swelling_pct=10.0, cell_aspect_ratio=p['cell_ar'],
-             superellipse_n=p['n_super'], n_families=p['nfam'],
-             microfibril_slenderness=p['slend_mf'], tolerance=p['tol'], cellulose_material=p['cellulose'])
-    f.update(zip(('cellulose', 'hemicellulose', 'lignin', 'extractives'), p['mass_fr']))
-    f.update(zip(('L_EW', 'W2_EW', 'L_LW', 'W2_LW'), p['EWLW']))
-    return f
+    flat = dict(
+        wood=wood, states=[1, 2, 3], polymer='HEMA', E_poly=E, nu_poly=nu,
+        density=params['density'], moisture=params['moisture'], CI=params['CI'], MFA=params['MFA'],
+        vessel_pct=100 * params['vessel'], ray_pct=100 * params['ray'], IF_alpha=0.0, IF_beta=0.0,
+        swelling=False, swelling_pct=10.0, cell_aspect_ratio=params['cell_ar'],
+        superellipse_n=params['n_super'], n_families=params['nfam'],
+        microfibril_slenderness=params['slend_mf'], tolerance=params['tol'], cellulose_material=params['cellulose']
+    )
+    flat.update(zip(('cellulose', 'hemicellulose', 'lignin', 'extractives'), params['mass_fr']))
+    flat.update(zip(('L_EW', 'W2_EW', 'L_LW', 'W2_LW'), params['EWLW']))
+    return flat
 
 
-def values(v):
-    """5 -> [5.]; [1, 2] -> [1., 2.]; '1, 2' -> [1., 2.]; '0:0.5:2' -> [0., 0.5, ..., 2.]."""
-    if isinstance(v, (list, tuple)):
-        return [np.nan if x is None else float(x) for x in v]
-    if not isinstance(v, str):
-        return [np.nan if v is None else float(v)]
+def values(val) -> list[float]:
+    """
+    Convert a value to a list of floats. EG:
+    5 -> [5.]; [1, 2] -> [1., 2.]; '1, 2' -> [1., 2.]; '0:0.5:2' -> [0., 0.5, ..., 2.].
+    """
+    if isinstance(val, (list, tuple)):
+        return [np.nan if x is None else float(x) for x in val]
+    if not isinstance(val, str):
+        return [np.nan if val is None else float(val)]
     out = []
-    for tok in v.replace(';', ',').replace(' ', ',').split(','):
+    for tok in val.replace(';', ',').replace(' ', ',').split(','):
         if ':' in tok:
             a, s, b = (float(x) for x in tok.split(':'))
             out += list(np.round(np.arange(a, b + s * 1e-9, s), 12))
         elif tok:
             out.append(float(tok))
     if not out:
-        raise ValueError(f'empty input "{v}"')
+        raise ValueError(f'empty input "{val}"')
     return out
 
 
@@ -454,49 +427,46 @@ def run_batch(inp, progress=None):
 
     Returns dict(inputs, rows, varied, errors, n); rows are (inputs d, result r,
     MFA index i) with one row per state, combination and MFA."""
-    f = flat_defaults(inp.get('wood', 'Birch'))
+    flat = flat_defaults(inp.get('wood', 'Birch'))
     if inp.get('polymer') in POLYMERS and 'E_poly' not in inp:
-        f['E_poly'], f['nu_poly'] = POLYMERS[inp['polymer']]
-    f.update({k: v for k, v in inp.items() if not k.startswith('_')})
-    lists = {k: values(f[k]) for k in INPUTS}
-    mfa, states = values(f['MFA']), [int(s) for s in values(f['states'])]
+        flat['E_poly'], flat['nu_poly'] = POLYMERS[inp['polymer']]
+    flat.update({k: v for k, v in inp.items() if not k.startswith('_')})
+    lists = {k: values(flat[k]) for k in INPUTS}
+    mfa, states = values(flat['MFA']), [int(s) for s in values(flat['states'])]
     varied = [k for k in INPUTS if len(lists[k]) > 1] + (['MFA'] if len(mfa) > 1 else [])
-    combos = [(st, dict(zip(INPUTS, (lists[k][j] for k, j in zip(INPUTS, idx)))))
-              for st in states for idx in itertools.product(*(range(len(v)) for v in lists.values()))
-              if st != 1 or all(idx[list(INPUTS).index(k)] == 0 for k in POLY)]   # native: polymer once
+    input_index = {k: i for i, k in enumerate(INPUTS)}
+
+    # Generate all combinations of inputs and states, skipping invalid ones (native wood with polymer properties)
+    combos = []
+    for state in states:
+        for idx in itertools.product(*(range(len(v)) for v in lists.values())):
+            # native: polymer once
+            if state == 1 and not all(idx[input_index[k]] == 0 for k in POLY):
+                continue
+            combo = {k: lists[k][j] for k, j in zip(INPUTS, idx)}
+            combos.append((state, combo))
+
     rows, errors = [], []
-    for n, (st, d) in enumerate(combos):
-        # print(f'Running {STATES[st]} {d} ({n + 1}/{len(combos)})')
-        p = defaults(f['wood'])
-        p.update(state=st, polymer='custom', MFA=mfa, cellulose=f['cellulose_material'],
-                 swelling=bool(f['swelling']), E_poly=d['E_poly'], nu_poly=d['nu_poly'],
-                 density=d['density'], moisture=d['moisture'], CI=d['CI'],
-                 vessel=d['vessel_pct'] / 100, ray=d['ray_pct'] / 100, IF=(d['IF_alpha'], d['IF_beta']),
-                 swelling_pct=d['swelling_pct'], cell_ar=d['cell_aspect_ratio'],
-                 n_super=d['superellipse_n'], nfam=int(d['n_families']),
-                 slend_mf=d['microfibril_slenderness'], tol=int(d['tolerance']),
-                 mass_fr=[d[k] for k in ('cellulose', 'hemicellulose', 'lignin', 'extractives')],
-                 EWLW=[d[k] for k in ('L_EW', 'W2_EW', 'L_LW', 'W2_LW')])
+    for n, (state, data) in enumerate(combos):
+        params = defaults(flat['wood'])
+        params.update(
+            state=state, polymer='custom', MFA=mfa, cellulose=flat['cellulose_material'],
+            swelling=bool(flat['swelling']), E_poly=data['E_poly'], nu_poly=data['nu_poly'],
+            density=data['density'], moisture=data['moisture'], CI=data['CI'],
+            vessel=data['vessel_pct'] / 100, ray=data['ray_pct'] / 100, IF=(data['IF_alpha'], data['IF_beta']),
+            swelling_pct=data['swelling_pct'], cell_ar=data['cell_aspect_ratio'],
+            n_super=data['superellipse_n'], nfam=int(data['n_families']),
+            slend_mf=data['microfibril_slenderness'], tol=int(data['tolerance']),
+            mass_fr=[data[k] for k in ('cellulose', 'hemicellulose', 'lignin', 'extractives')],
+            EWLW=[data[k] for k in ('L_EW', 'W2_EW', 'L_LW', 'W2_LW')]
+        )
         try:
-            r = run(p)
+            r = run(params)
         except Exception as e:                    # keep the batch running, report at the end
-            errors.append(f'{STATES[st]} {d}: {e}')
+            errors.append(f'{STATES[state]} {data}: {e}')
             continue
-        rows += [(dict(d, state=st, MFA=r['MFA'][i]), r, i) for i in range(len(r['MFA']))]
+        rows += [(dict(data, state=state, MFA=r['MFA'][i]), r, i) for i in range(len(r['MFA']))]
         if progress:
             progress(n + 1, len(combos))
-    return dict(inputs=f, rows=rows, varied=varied, errors=errors, n=len(combos))
 
-
-def write_csv(b, fn):
-    """One line per row of run_batch: all inputs, outputs, upper triangles of C."""
-    iu, f = np.triu_indices(6), b['inputs']
-    with open(fn, 'w', newline='', encoding='utf8') as fh:
-        w = csv.writer(fh)
-        w.writerow(['wood', 'polymer', 'cellulose_material', 'swelling', 'state'] + list(INPUTS)
-                   + ['MFA'] + list(OUTPUTS) + [f'Cclw_{a + 1}{c + 1}' for a, c in zip(*iu)]
-                   + [f'Ccellwall_{a + 1}{c + 1}' for a, c in zip(*iu)])
-        for d, r, i in b['rows']:
-            w.writerow([f['wood'], f['polymer'], f['cellulose_material'], f['swelling'], STATES[d['state']]]
-                       + [d[k] for k in INPUTS] + [d['MFA']] + [r[k][i] for k in OUTPUTS]
-                       + list(r['C_clearwood'][i][iu]) + list(r['C_cellwall'][i][iu]))
+    return dict(inputs=flat, rows=rows, varied=varied, errors=errors, n=len(combos))

@@ -10,10 +10,11 @@ authors = [
     {name = 'Königsberger Markus ', email = 'markus.koenigsberger@tuwien.ac.at'},
 ]
 readme = 'README.md'
-requires-python = '>=3.9'
+license = {file = 'LICENSE'}
+requires-python = '>=3.11'
 dependencies = [
     'trogon',
-    'rich_click',
+    'rich_click>=1.9,<2.0',
     'numpy',
     'scipy',
     'matplotlib',
@@ -26,13 +27,6 @@ tests = [
 
 [project.scripts]
 aitw-wood-stiffness-homogenization = 'wood_stiffness_homogenization.cli:cli'
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["wood_stiffness_homogenization*"]
-
-[tool.setuptools.package-data]
-wood_stiffness_homogenization = ["data/*.json"]
 
 [tool.flit.module]
 name = 'wood_stiffness_homogenization'
