@@ -8,6 +8,7 @@ on:
       - "wood_stiffness_homogenization/**"
       - "pyproject.toml"
       - ".github/workflows/ci.yml"
+      - ".github/ci.eb"
       - "examples/**"
   pull_request:
 
