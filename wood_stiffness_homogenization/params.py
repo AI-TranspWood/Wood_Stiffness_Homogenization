@@ -326,24 +326,11 @@ class HomegenizationParams(JsonParams):
             'choices': list(CRYCEL.keys()),
         }
     )
-    MFA: float = field(
-        metadata={
-            'help': 'List of microfibril angles [°]; evaluated within each run, not a batch dimension',
-            'group': '4. Advanced Parameters',
-        }
-    )
     CI: float = field(
         default=None,
         metadata={
             'help': 'Mass-based crystallinity of cellulose [%]',
             'group': '4. Advanced Parameters',
-        }
-    )
-    states: int = field(
-        metadata={
-            'help': 'List of wood states to evaluate: 1 native, 2 polymer infiltrated, 3 delignified + infiltrated',
-            'group': '4. Advanced Parameters',
-            # 'choices': [1, 2, 3],
         }
     )
 
@@ -465,7 +452,4 @@ def list_fields(cls: type, *field_names: str) -> type:
         kw_only=True
     )
 
-BatchHomegenizationParams = list_fields(
-    HomegenizationParams,
-    *INPUTS.keys(), 'states', 'MFA', 'cellulose_material'
-)
+BatchHomegenizationParams = list_fields(HomegenizationParams, *INPUTS.keys())
